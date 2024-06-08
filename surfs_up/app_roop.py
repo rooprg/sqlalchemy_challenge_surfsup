@@ -6,9 +6,10 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import create_engine, func, inspect
 from sqlalchemy.orm import Session
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 import datetime as dt
+
 
 #################################################
 # Database Setup
@@ -73,7 +74,6 @@ def stations():
 
     session.close()
 
-    # Convert list of tuples into normal list
     all_stations = list(np.ravel(results))
 
     return jsonify(all_stations)
@@ -83,15 +83,58 @@ def tempobs():
     
     session = Session(engine)
     
-    results = 
+    one_year_date = dt.date(2017, 8, 23) - dt.timedelta(days=365)
     
+    results = session.query(Measurement.date, Measurement.tobs).\
+        filter(Measurement.date >= one_year_date).\
+        filter(Measurement. station == "USC00519281").all()
+        
+    session.close()
+    
+    one_station_year = list(np.ravel(results))
+    
+    return jsonify(one_station_year)
+ 
+# INSTRUCTIONS:
+# Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature
+# for a specified start.
 
+# For a specified start, calculate Tmin, Tavg, and Tmax for all the dates greater than or equal 
+# to the start date.
 
-
-
-
-
-
-
+# A start route that:
+# Accepts the start date as a parameter from the URL
+# Returns the min, max, and average temperatures calculated from 
+# the given start date to the end of the dataset
+ 
+@app.route("/api/v1.0/start")
+def descstatsstart():
+    
+    session = Session(engine)
+    
+    start_date = request.args.get('start_date')
+    start_date = dt.datetime.strptime(start_date, '%Y-%m-%d').date()
+    
+    final_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
+    final_date = final_date[0]
+    
+    sel = [func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)]
+    
+    results = session.query(*sel).\
+        filter(Measurement.date.between(start_date, final_date)).all()
+    
+    
+    desc_stats_start = []
+    for result in results:
+        desc_stats_start.append({
+            "Min Temperature": result[0],
+            "Avg Temperature": result[1],
+            "Max Temperature": result[2]
+        })
+   
+    session.close()    
+        
+    return jsonify(desc_stats_start)
+    
 if __name__ == '__main__':
     app.run(debug=True)
