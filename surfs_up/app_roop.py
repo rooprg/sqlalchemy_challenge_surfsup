@@ -54,11 +54,14 @@ def welcome():
 @app.route("/api/v1.0/precipitation")
 def precipitation():
    
+   # Identify the date for one year previous
    one_year_date = dt.date(2017, 8, 23) - dt.timedelta(days=365)
    
+   # Query for the specify precipitation volumes
    precip_subset = session.query(Measurement.date, Measurement.prcp).\
     filter(Measurement.date >= one_year_date).all()
    
+   # Generate a dictionary using 'date' as key and 'prcp' as the value
    precip_table = {date: prcp for date, prcp in precip_subset}
    
    session.close()
@@ -68,12 +71,15 @@ def precipitation():
 @app.route("/api/v1.0/stations")
 def stations():
 
+    # Create our session (link) from Python to the DB
     session = Session(engine)
 
+    # Query for all stations
     results = session.query(Station.station).all()
 
     session.close()
 
+    # Convert results into a normal list
     all_stations = list(np.ravel(results))
 
     return jsonify(all_stations)
@@ -81,60 +87,57 @@ def stations():
 @app.route("/api/v1.0/tobs")
 def tempobs():
     
+    # Create our session (link) from Python to the DB
     session = Session(engine)
     
+    # Identify the date for one year previous
     one_year_date = dt.date(2017, 8, 23) - dt.timedelta(days=365)
     
+    # Query for a year's precipitation date for a single station
     results = session.query(Measurement.date, Measurement.tobs).\
         filter(Measurement.date >= one_year_date).\
         filter(Measurement. station == "USC00519281").all()
         
     session.close()
     
+    # Convert results into a normal list
     one_station_year = list(np.ravel(results))
     
     return jsonify(one_station_year)
  
-# INSTRUCTIONS:
-# Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature
-# for a specified start.
 
-# For a specified start, calculate Tmin, Tavg, and Tmax for all the dates greater than or equal 
-# to the start date.
-
-# A start route that:
-# Accepts the start date as a parameter from the URL
-# Returns the min, max, and average temperatures calculated from 
-# the given start date to the end of the dataset
- 
-@app.route("/api/v1.0/start")
-def descstatsstart():
+@app.route("/api/v1.0/temp/<start>")
+@app.route("/api/v1.0/temp/<start>/<end>")
+def temp_stats(start=None, end=None):
     
+    # Create our session (link) from Python to the DB
     session = Session(engine)
-    
-    start_date = request.args.get('start_date')
-    start_date = dt.datetime.strptime(start_date, '%Y-%m-%d').date()
-    
-    final_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
-    final_date = final_date[0]
-    
+
+    # Select the descriptive statistics to be used on observed temperature data
     sel = [func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)]
-    
-    results = session.query(*sel).\
-        filter(Measurement.date.between(start_date, final_date)).all()
-    
-    
-    desc_stats_start = []
-    for result in results:
-        desc_stats_start.append({
-            "Min Temperature": result[0],
-            "Avg Temperature": result[1],
-            "Max Temperature": result[2]
-        })
-   
-    session.close()    
+
+    # Define the results generated if the user provides an end date (and start date)
+    if end:
+        results = session.query(*sel).\
+            filter(Measurement.date >= start).\
+            filter(Measurement.date <= end).all()
         
-    return jsonify(desc_stats_start)
-    
+        # Convert results into a normal list
+        tobs_start_only = list(np.ravel(results))
+
+        return jsonify(tobs_start_only)
+
+    # Define the results generated alternatively if only a start date is provided by the user
+    else:
+        results = session.query(*sel).\
+            filter(Measurement.date >= start).all()
+        
+        # Convert results into a normal list
+        tobs_other = list(np.ravel(results))
+
+        session.close()    
+        
+        return jsonify(tobs_other)
+
 if __name__ == '__main__':
     app.run(debug=True)
