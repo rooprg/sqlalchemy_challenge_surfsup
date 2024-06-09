@@ -23,7 +23,7 @@ Citations:
 
 (3) Tutoring session (09-Jun-2024):
 
-(3a) Discussion on student's code needed for API Dynamic Route for both (1) start date only and (2) start date + end date scenarios
+(3a) Discussion on student's code needed for API Dynamic Route exercise for both (1) start date only and (2) start date + end date scenarios
 
 (3b) Confirmation of np.ravel usage within Climate App code
 
@@ -38,5 +38,7 @@ Citations:
 (4c) Learning how to properly enter (1) start and (2) start + end dates in browser address for the Climate App exercise
 
 (4d) Assistance with correcting syntax when errors where identified
+
+(4e) Other general code-related questions
 
 
