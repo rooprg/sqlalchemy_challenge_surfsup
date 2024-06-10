@@ -10,7 +10,6 @@ from flask import Flask, jsonify, request
 
 import datetime as dt
 
-
 #################################################
 # Database Setup
 #################################################
@@ -40,16 +39,15 @@ app = Flask(__name__)
 
 @app.route("/")
 def welcome():
-    """List all the available routes:"""
+    """List of all the available routes"""
     return (
-        f"Available Routes-<br/>"
+        f"Welcome to my Climate App. These are the available Routes:<br/>"
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/start<br/>"
-        f"/api/v1.0/start/end"
+        f"/api/v1.0/temp/start<br/>"
+        f"/api/v1.0/temp/start/end"
     )
-
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
@@ -105,7 +103,6 @@ def tempobs():
     
     return jsonify(one_station_year)
  
-
 @app.route("/api/v1.0/temp/<start>")
 @app.route("/api/v1.0/temp/<start>/<end>")
 def temp_stats(start=None, end=None):
