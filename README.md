@@ -8,7 +8,11 @@ This exercise will result in a climate analysis, which can assist with trip plan
 
 **(2) Dataset Description:**
 
-A single .sqlite file contains the precipitation and location (station) information. It is named "hawaii.sqlite".
+The .sqlite file contains the precipitation and location (station) information. It is named "hawaii.sqlite".
+
+The "hawaii_measurements.csv" file contains station identification; dates; and observed precipitation (prcp) and temperature (tobs) values
+
+The "hawaii_stations.csv" file contains station identification and name; coordinates (latitude and longitude); and elevation measurements.
 
 
 **(3) Data Cleaning and Preprocessing:**
@@ -27,21 +31,54 @@ The app resulted in displaying responses to queries in a .html format, which cou
 
 **(5) Results and Analysis:**
 
-For the climate analysis-
+(a) For the climate analysis-
 
-(a) Plot of the precipitation analysis, the cumulative rainfall in inches for twelve (12) months between August 2016 and August 2017 was plotted with Date as the x-axis:
+(i) A plot of the precipitation analysis, the cumulative rainfall in inches for twelve (12) months between August 2016 and August 2017 was plotted with Date as the x-axis:
 
-![Rainfall versus Time}(
+![Rainfall versus Time](Output/1_precipitation_vs_time.png)
+
+
+(ii) A summary of precipitation statistics in tabular form:
+
+![Stats](Output/2_summary_statistics.png)
+
+
+(iii) A histogram of the frequency of observations at Station USC00519281 for the temperatures measured over a twelve (12) month period
+
+![Histogram](Output/3_frequency_vs_temperature.png)
+
+
+(b) Climate app-
+
+The user can use the "app_roop.py" file to query and generate responses to specific lines of inquiry:
+
+(i) API Static Route that for precipitation, returns json with the date as the key and the value as the precipitation and only returns the jsonified precipitation data for the last year in the database
+
+(ii) API Static Route that returns jsonified data of all of the stations in the database
+
+(iii) API Static Route that returns jsonified data for the most active station (USC00519281) and only returns the jsonified data for the last year of data (3 points)
+
+(iv) API Dynamic Routes that-
+
+- A start route that accepts the start date as a parameter from the URL and returns the min, max, and average temperatures calculated from the given start date to the end of the dataset (4 points)
+
+- A start/end route that accepts the start and end dates as parameters from the URL and returns the min, max, and average temperatures calculated from the given start date to the given end date (6 points)
 
 
 **(6) Ethical Considerations:**
 
-(Discuss any ethical considerations taken into account during the project, such as data privacy, bias, or fairness)
+The data used for this exercise does not contain information that is unavailable elsewhere or is formatted in a different way. There are no sensitivity concerns for the dataset.
 
 
 **(7) Instructions for Interacting with the Project:**
 
-(Provide clear instructions on how to interact with the visualizations, such as how to run the code or access the visualizations)
+Code is available within two files, "climate_roop.ipynb" and "app_roop.py" within the **surfs_up** folder.
+
+Plots and the table are filed within the **Output** folder.
+
+Data is stored in the "hawaii.sqlite"; hawaii_measurements.csv"; and "hawaii_stations.csv" files within the **Resources** folder.
+
+To use the Static and Dynamic Routes, use the code in combination with a brower (i.e., Google Chrome)
 
 
 **(8) Citations:**
