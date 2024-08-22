@@ -8,7 +8,7 @@ This exercise will result in a climate analysis, which can assist with trip plan
 
 **(2) Dataset Description:**
 
-The .sqlite file contains the precipitation and location (station) information. It is named "hawaii.sqlite".
+The "hawaii.sqlite" file contains the precipitation and location (station) information.
 
 The "hawaii_measurements.csv" file contains station identification; dates; and observed precipitation (prcp) and temperature (tobs) values
 
