@@ -20,12 +20,18 @@ The tables did not required cleaning for any missing or partially available info
 
 **(4) Data Visualization Techniques:**
 
-(Detail the data visualization techniques used in the project, such as bar charts, line graphs, scatter plots, etc. Explain why these techniques were chosen and how they help in understanding the data)
+The climate analysis resulted in two bar charts and a summary statistics table.
+
+The app resulted in displaying responses to queries in a .html format, which could be viewed in a brower window (i.e., Google Chrome) at an address like http://127.0.0.1:5000/api/v1.0/precipitation.
 
 
 **(5) Results and Analysis:**
 
-(Present the insights gained from the data visualization. Describe any patterns, trends, or relationships discovered in the data)
+For the climate analysis-
+
+(a) Plot of the precipitation analysis, the cumulative rainfall in inches for twelve (12) months between August 2016 and August 2017 was plotted with Date as the x-axis:
+
+![Rainfall versus Time}(
 
 
 **(6) Ethical Considerations:**
